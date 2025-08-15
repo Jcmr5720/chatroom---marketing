@@ -17,7 +17,7 @@
                'apichat.io Gupshup Chat-Api. ChatApi. Marketing whatsapp group ChatRoom 2.0.',
     'description': 'Send mass WhatsApp with Templates message Marketing. '
                    'apichat.io. Chat-Api. ChatApi. Marketing whatsapp group ChatRoom 2.0.',
-    'version': '14.0.20',
+    'version': '14.0.21',
     'author': 'AcruxLab',
     # 'live_test_url': 'https://chatroom.acruxlab.com/web/signup',
     'support': 'info@acruxlab.com',
@@ -41,7 +41,6 @@
         'data/cron.xml',
         'data/data.xml',
         'views/menus.xml',
-        'views/include_template.xml',
         'views/mailing_contact_views.xml',
         'views/mailing_list_views.xml',
         'views/mailing_mailing_views.xml',
@@ -53,6 +52,11 @@
         'wizards/mailing_sms_test_views.xml',
         'wizards/send_multi_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'whatsapp_connector_mass/static/src/css/mass_mailing.css',
+        ],
+    },
     'qweb': [
     ],
     'post_load': '',
