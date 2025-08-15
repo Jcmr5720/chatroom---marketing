@@ -22,6 +22,21 @@ class MailingTrace(models.Model):
         store=True,
     )
 
+    # some odoo versions removed the ``state`` field from ``mailing.trace``.
+    # the views of this module still rely on it, so recreate a compatible
+    # computed version based on the dates of delivery events.
+    state = fields.Selection(
+        [
+            ('outgoing', 'Outgoing'),
+            ('sent', 'Sent'),
+            ('bounced', 'Bounced'),
+            ('exception', 'Failed'),
+        ],
+        compute='_compute_state',
+        store=True,
+        readonly=True,
+    )
+
     @api.depends('model', 'res_id')
     def _compute_ref_name(self):
         for rec in self:
@@ -36,6 +51,18 @@ class MailingTrace(models.Model):
     def _compute_ws_error_msg(self):
         for rec in self:
             rec.ws_error_msg = rec.ws_message_id.error_msg or rec.ws_error_msg_trace
+
+    @api.depends('sent', 'bounced', 'exception')
+    def _compute_state(self):
+        for rec in self:
+            if rec.bounced:
+                rec.state = 'bounced'
+            elif rec.exception:
+                rec.state = 'exception'
+            elif rec.sent:
+                rec.state = 'sent'
+            else:
+                rec.state = 'outgoing'
 
     def action_view_contact(self):
         # from O15
