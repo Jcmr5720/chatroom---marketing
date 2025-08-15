@@ -16,6 +16,11 @@ class MailingTrace(models.Model):
     ws_error_msg_trace = fields.Char()
     ws_error_msg = fields.Char('Error', compute='_compute_ws_error_msg', store=True)
     ws_phone = fields.Char('Phone')
+    schedule_date = fields.Datetime(
+        related='mass_mailing_id.schedule_date',
+        string='Scheduled',
+        store=True,
+    )
 
     @api.depends('model', 'res_id')
     def _compute_ref_name(self):
