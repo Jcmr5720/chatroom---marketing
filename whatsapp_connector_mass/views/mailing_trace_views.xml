@@ -9,7 +9,7 @@
                 <field name="mass_mailing_id"/>
                 <field name="ws_phone"/>
                 <field name="ws_message_id" />
-                <filter string="Scheduled" name="filter_scheduled" domain="[('scheduled', '!=', False), ('state', '=', 'outgoing')]"/>
+                <filter string="Scheduled" name="filter_scheduled" domain="[('schedule_date', '!=', False), ('state', '=', 'outgoing')]"/>
                 <filter string="Sent" name="filter_sent" domain="[('sent', '!=', False)]"/>
                 <filter string="Delivered" name="filter_delivered" domain="[('sent', '!=', False), ('state', 'not in', ['exception', 'bounced'])]"/>
                 <separator/>
@@ -69,7 +69,7 @@
                             <field name="res_id" groups="base.group_no_one"/>
                         </group>
                         <group>
-                            <field name="scheduled"/>
+                            <field name="schedule_date"/>
                             <field name="sent"/>
                             <field name="bounced"/>
                             <field name="exception"/>
