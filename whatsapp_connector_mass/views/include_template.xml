@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <template id="assets_backend" name="chatroom mass mailing assets" inherit_id="web.assets_backend">
-        <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/whatsapp_connector_mass/static/src/css/mass_mailing.css" type="text/css"/>
-        </xpath>
-    </template>
-</odoo>
