@@ -1,0 +1,12 @@
+git+https://github.com/prestapyt/prestapyt.git@f9898b4245611b487e4592f601a22a07de0a26cc
+openai
+xlrd
+xlsxwriter
+python-barcode
+pycups
+Cerberus==1.3.2
+prestapyt==0.11.1
+phonenumbers
+openupgradelib
+git+https://github.com/mercadolibre/python-sdk.git
+pdf2image

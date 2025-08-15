@@ -1,0 +1,163 @@
+// esconde botones en el formulario por ejemplo exportar, 
+@mixin hide_o_cp_bottom_left {
+    .o_cp_bottom_left {
+        display: none;
+    }
+
+    .o_cp_bottom_right {
+        width: 100%;
+
+        >div {
+            justify-content: flex-end; //alinear a la derecha
+        }
+    }
+}
+
+// esconder en todas las vistas botones de exportar y otros, 
+@mixin hide_o_cp_bottom_left_all_views {
+
+    >.o_kanban_view,
+    >.o_list_view,
+    >.o_form_view {
+        @include hide_o_cp_bottom_left;
+    }
+}
+
+// agrandar los botones del box de los formularios
+@mixin form_buttonbox_fix {
+    .o_form_sheet_bg {
+        >.o_form_sheet {
+            >.o-form-buttonbox {
+
+                .btn.oe_stat_button,
+                >.o_field_widget {
+                    width: 20%;
+                    margin-top: 0;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+    }
+}
+
+// esconder el texto de los botones del box en los formularios
+@mixin form_buttonbox_hide_text {
+    .o_form_sheet_bg {
+        >.o_form_sheet {
+            >.o-form-buttonbox {
+                .btn.oe_stat_button {
+                    width: auto;
+
+                    >.o_field_statinfo,
+                    >.o_stat_info {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// agrandar las columnas del formulario
+@mixin form_column_grow {
+    .o_form_sheet_bg {
+        >.o_form_sheet {
+            >.o_group {
+                >.o_inner_group {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+// convertir el formulario a 1 columna
+@mixin form_2_one_column {
+    .o_form_sheet_bg {
+        >.o_form_sheet {
+            >.o_group {
+                >.o_inner_group {
+                    grid-template-columns: 1fr
+                }
+            }
+        }
+    }
+}
+
+// pequeño
+.o_sidebar_right.col-lg-3,
+.o_sidebar_right.col-xl-3 {
+    .o_ActionTab {
+        @include hide_o_cp_bottom_left_all_views;
+
+        >.o_form_view {
+            @include form_buttonbox_fix;
+            @include form_column_grow;
+
+            @media (min-width: 992px) and (max-width: 1533px) {
+                @include form_buttonbox_hide_text;
+                @include form_2_one_column;
+            }
+        }
+    }
+
+    .o_ActionTab.vertical {
+        >.o_form_view {
+            @include form_buttonbox_hide_text;
+            @include form_2_one_column;
+        }
+    }
+}
+
+// mediano
+.o_sidebar_right.col-lg-5,
+.o_sidebar_right.col-xl-5 {
+    .o_ActionTab {
+        @media (min-width: 992px) and (max-width: 1533px) {
+            @include hide_o_cp_bottom_left_all_views;
+        }
+
+        >.o_list_view {
+            @media (min-width: 1534px) {
+                @include hide_o_cp_bottom_left;
+            }
+        }
+
+        >.o_form_view {
+            @include form_buttonbox_fix;
+
+            @media (min-width: 992px) and (max-width: 1533px) {
+                @include form_column_grow;
+            }
+        }
+    }
+    
+    .o_ActionTab.vertical {
+        >.o_form_view {
+            @media (min-width: 1534px) {
+                @include form_column_grow;
+            }
+        }
+        
+    }
+}
+
+// grande
+.o_sidebar_right.col-lg-7,
+.o_sidebar_right.col-xl-7 {
+    .o_ActionTab {
+        >.o_list_view {
+            @media (min-width: 992px) and (max-width: 1533px) {
+                @include hide_o_cp_bottom_left;
+            }
+        }
+
+        >.o_form_view {
+            @include form_buttonbox_fix;
+
+            @media (min-width: 992px) and (max-width: 1199px) {
+                @include form_column_grow;
+            }
+        }
+    }
+}

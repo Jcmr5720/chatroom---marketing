@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="utm_campaign_view_form" model="ir.ui.view" >
+        <field name="name">utm.campaign.view.form</field>
+        <field name="model">utm.campaign</field>
+        <field name="priority">25</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="utm.utm_campaign_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name=%(mass_mailing.action_create_mass_mailings_from_campaign)d]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="%(mailing_mailing_action_ws_from_campaign)d" type="action"
+                    class="oe_highlight" groups="mass_mailing.group_mass_mailing_campaign"
+                    string="Create new Mailing"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="%(mailing_mailing_action_view_ws_from_campaign)d"
+                    type="action" class="oe_stat_button order-9" icon="fa-whatsapp"
+                    attrs="{'invisible': [('mailing_ws_count', '=', 0)]}" groups="mass_mailing.group_mass_mailing_campaign">
+                    <field name="mailing_ws_count" widget="statinfo" string="Mailings"/>
+                </button>
+            </xpath>
+            <xpath expr="//notebook/page[@name='mailings']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='mailing_mail_count']/.." position="attributes">
+                <attribute name="context">{'default_mailing_type': 'whatsapp',
+                                           'whatsapp_mailing': True}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='click_count']/.." position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            
+            <xpath expr="//notebook" position="inside">
+                <page string="Mailings" name="mailings" attrs="{'invisible': [('mailing_mail_count', '=', 0)]}">
+                    <field name="mailing_mail_ids" readonly="1" nolabel="1">
+                        <tree>
+                            <field name="subject"/>
+                            <field name="sent_date"/>
+                            <field name="state"/>
+                            <field name="delivered"/>
+                            <field name="bounced"/>
+                            <button name="action_duplicate" type="object" string="Duplicate"/>
+                        </tree>
+                    </field>
+                    <div class="o_utm_campaign_mass_mailing_substats d-flex justify-content-end align-items-center">
+                        <div class="d-flex justify-content-end align-items-center flex-column">
+                            <label for="received_ratio" string="Delivered" class="m-0"/>
+                            <div class="m-0">
+                                <span class="text-right">
+                                    <field name="received_ratio"/>
+                                    <span>%</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center flex-column">
+                            <label for="bounced_ratio" string="Bounced" class="m-0"/>
+                            <div class="m-0">
+                                <span class="text-right">
+                                    <field name="bounced_ratio"/>
+                                    <span>%</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_view_utm_campaigns" model="ir.actions.act_window">
+        <field name="name">Campaigns</field>
+        <field name="res_model">utm.campaign</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+            Create a mailing campaign
+            </p><p>
+            Campaigns are the perfect tool to track results across multiple mailings.
+            </p>
+        </field>
+        <field name="domain">[('is_website', '=', False)]</field>
+        <field name="context">{
+                'default_mailing_type': 'whatsapp',
+                'whatsapp_mailing': True
+        }</field>
+    </record>
+
+    <record id="action_view_utm_campaigns_kanban" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="utm.utm_campaign_view_kanban"/>
+        <field name="act_window_id" ref="action_view_utm_campaigns"/>
+    </record>
+    
+    <record id="action_view_utm_campaigns_tree" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="utm.utm_campaign_view_tree"/>
+        <field name="act_window_id" ref="action_view_utm_campaigns"/>
+    </record>
+
+    <record id="action_view_utm_campaigns_form" model="ir.actions.act_window.view">
+        <field name="sequence">3</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="utm_campaign_view_form"/>
+        <field name="act_window_id" ref="action_view_utm_campaigns"/>
+    </record>
+
+    <record id="whatsapp_mass_campaigns" model="ir.ui.menu">
+        <field name="action" ref="action_view_utm_campaigns" />
+    </record>
+
+</odoo>

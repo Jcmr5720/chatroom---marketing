@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="acrux_chat_send_multi_wizard_action" model="ir.actions.act_window">
+            <field name="name">Send Multi Whatsapp</field>
+            <field name="res_model">acrux.chat.send.multi.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="whatsapp_connector.model_acrux_chat_conversation"/>
+        </record>
+
+    </data>
+</odoo>

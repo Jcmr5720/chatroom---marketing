@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- form admin -->
+    <record model="ir.ui.view" id="view_acrux_chat_conversation_form_admin">
+        <field name="name">acrux.chat.conversation.form</field>
+        <field name="model">acrux.chat.conversation</field>
+        <field name="inherit_id" ref="whatsapp_connector.view_whatsapp_connector_conversation_form_admin" />
+        <field name="arch" type="xml">
+            <field name="agent_id" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="note" />
+            </field>
+        </field>
+    </record>
+
+    <!-- formulario para la pestaña info en el chatroom -->
+    <record model="ir.ui.view" id="view_whatsapp_connector_conversation_chat_tag_form">
+        <field name="name">acrux.chat.conversation.tag.chat.form</field>
+        <field name="model">acrux.chat.conversation</field>
+        <field name="inherit_id" ref="whatsapp_connector.view_whatsapp_connector_conversation_chatroom_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group" position="inside">
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="note" />
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_whatsapp_connector_conversation_tree">
+        <field name="name">acrux.chat.conversation.tree</field>
+        <field name="model">acrux.chat.conversation</field>
+        <field name="inherit_id" ref="whatsapp_connector.view_whatsapp_connector_conversation_tree" />
+        <field name="arch" type="xml">
+            <field name="last_activity" position="after">
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

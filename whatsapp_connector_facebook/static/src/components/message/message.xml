@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="chatroom.MessageContent" t-inherit="whatsapp_connector.chatroom.MessageContent" t-inherit-mode="extension" owl="1">
+        <xpath expr="//t[contains(@t-elif, 'audio')]" position="after">
+            <t t-elif="message.ttype === 'url'">
+                <t t-if="!message.urlDue and message.resModelObj.mime and message.resModelObj.data">
+                    <t t-set="mime" t-value="message.resModelObj.mime" />
+                    <t t-set="data" t-value="message.resModelObj.data" />
+                    <t t-if="message.resModelObj.mime.startsWith('image')">
+                        <div href=""
+                            t-attf-style="background-image: url('data:{{mime}};base64,{{data}}'); background-size: 200px; cursor: pointer; height: 100px;width: 100px;"
+                            t-attf-data-mimetype="{{mime}}"
+                            class="o_AttachmentImage o_image o-attachment-viewable o-details-overlay o-medium"
+                            t-on-click="openStoryImage">
+                        </div>
+                    </t>
+                    <t t-elif="message.resModelObj.mime.startsWith('video')">
+                        <video width="200" height="200" controls="true" controlsList="nodownload">
+                            <source t-attf-src="data:{{mime}};base64,{{data}}" t-attf-type="{{mime}}" />
+                        </video>
+                    </t>
+                    <t t-else="">
+                        <i>Story not found.</i>
+                    </t>
+                </t>
+                <t t-else="">
+                    <i>Story not found.</i>
+                </t>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

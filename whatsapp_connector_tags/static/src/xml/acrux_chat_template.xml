@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-extend="acrux_chat_conversation">
+        <t t-jquery="div.acrux_chat_conversation_info" t-operation="append">
+            <div class="o_field_many2manytags o_field_widget acrux_chat_conversation_tag" t-if="widget.tag_ids">
+                <t t-foreach="widget.tag_ids" t-as="tag">
+                    <div t-attt-class="badge badge-pill o_tag_color_#{tag.color}" t-att-title="tag.name">
+                        <span class="o_badge_text">
+                            <t t-esc="tag.name" />
+                        </span>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </t>
+
+</templates>
