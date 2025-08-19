@@ -12,13 +12,13 @@
             </xpath>
             <xpath expr="//header" position="inside">
                 <button name="%(mailing_mailing_action_ws_from_campaign)d" type="action"
-                    class="oe_highlight" groups="mass_mailing.group_mass_mailing_campaign"
+                    class="oe_highlight" 
                     string="Create new Mailing"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="%(mailing_mailing_action_view_ws_from_campaign)d"
                     type="action" class="oe_stat_button order-9" icon="fa-whatsapp"
-                    attrs="{'invisible': [('mailing_ws_count', '=', 0)]}" groups="mass_mailing.group_mass_mailing_campaign">
+                    attrs="{'invisible': [('mailing_ws_count', '=', 0)]}" >
                     <field name="mailing_ws_count" widget="statinfo" string="Mailings"/>
                 </button>
             </xpath>
@@ -35,7 +35,7 @@
             </xpath>
             
             <xpath expr="//notebook" position="inside">
-                <page string="Mailings" name="mailings" attrs="{'invisible': [('mailing_mail_count', '=', 0)]}">
+                <page string="Mailings" name="mailings" >
                     <field name="mailing_mail_ids" readonly="1" nolabel="1">
                         <tree>
                             <field name="subject"/>

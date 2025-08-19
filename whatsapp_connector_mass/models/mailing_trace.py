@@ -52,17 +52,18 @@ class MailingTrace(models.Model):
         for rec in self:
             rec.ws_error_msg = rec.ws_message_id.error_msg or rec.ws_error_msg_trace
 
-    @api.depends('sent', 'bounced', 'exception')
+    @api.depends('trace_status')
     def _compute_state(self):
         for rec in self:
-            if rec.bounced:
+            if rec.trace_status == "bounced":
                 rec.state = 'bounced'
-            elif rec.exception:
+            elif rec.trace_status == "exception":
                 rec.state = 'exception'
-            elif rec.sent:
+            elif rec.trace_status == "sent":
                 rec.state = 'sent'
-            else:
+            elif rec.trace_status == "outgoing":
                 rec.state = 'outgoing'
+            
 
     def action_view_contact(self):
         # from O15

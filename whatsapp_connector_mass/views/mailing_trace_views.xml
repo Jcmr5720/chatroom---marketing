@@ -10,14 +10,12 @@
                 <field name="ws_phone"/>
                 <field name="ws_message_id" />
                 <filter string="Scheduled" name="filter_scheduled" domain="[('schedule_date', '!=', False), ('state', '=', 'outgoing')]"/>
-                <filter string="Sent" name="filter_sent" domain="[('sent', '!=', False)]"/>
-                <filter string="Delivered" name="filter_delivered" domain="[('sent', '!=', False), ('state', 'not in', ['exception', 'bounced'])]"/>
+                <filter string="Delivered" name="filter_delivered" domain="[ ('state', 'not in', ['exception', 'bounced'])]"/>
                 <separator/>
                 <filter string="Bounced" name="filter_bounced" domain="[('state', '=', 'bounced')]"/>
                 <filter string="Failed" name="filter_failed" domain="[('state', '=', 'exception')]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="state" domain="[]" context="{'group_by':'state'}"/>
-                    <filter string="Last State Update" name="state_update" domain="[]" context="{'group_by':'state_update'}"/>
                     <filter string="Mass Mailing" name="mass_mailing" domain="[]" context="{'group_by': 'mass_mailing_id'}"/>
                 </group>
             </search>
@@ -34,7 +32,6 @@
                 <field name="mass_mailing_id"/>
                 <field name="ws_message_id" />
                 <field name="state" widget="badge"/>
-                <field name="sent" optional="hide"/>
                 <field name="ws_error_msg"/>
                 <field name="ref_name"/>
                 <button name="action_view_contact" type="object"
@@ -64,15 +61,13 @@
                             <field name="ws_phone"/>
                             <field name="mass_mailing_id"/>
                             <field name="ws_message_id"/>
-                            <field name="campaign_id" groups="mass_mailing.group_mass_mailing_campaign"/>
-                            <field name="model" groups="base.group_no_one"/>
-                            <field name="res_id" groups="base.group_no_one"/>
+                            <field name="campaign_id" />
+                            <field name="model" />
+                            <field name="res_id" />
                         </group>
                         <group>
                             <field name="schedule_date"/>
-                            <field name="sent"/>
-                            <field name="bounced"/>
-                            <field name="exception"/>
+                            <field name="trace_status"/>
                             <field name="ws_error_msg" attrs="{'invisible': [('ws_error_msg', '=', False)]}"/>
                         </group>
                     </group>
