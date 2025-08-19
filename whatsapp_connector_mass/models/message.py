@@ -20,9 +20,13 @@ class AcruxChatMessages(models.Model):
         '''
         out = super(AcruxChatMessages, self).message_send()
         if out:
-            self.mailing_trace_ids.write({'exception': False,
-                                          'bounced': False,
-                                          'sent': fields.Datetime.now()})
+            self.mailing_trace_ids.write({
+                'exception': False,
+                'bounced': False,
+                'sent': fields.Datetime.now(),
+                'trace_status': 'sent',
+                'state': 'sent',
+            })
         return out
 
     def process_message_event(self, data):

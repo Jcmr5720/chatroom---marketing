@@ -182,6 +182,8 @@ class Mailing(models.Model):
                     'res_id': message.mailing_res_id,
                     'mass_mailing_id': mass.id,
                     'sent': fields.Datetime.now(),
+                    'trace_status': 'sent',
+                    'state': 'sent',
                     'ws_message_id': message.id,
                     'ws_phone': '+%s' % message.contact_id.number,
                 })
@@ -196,6 +198,8 @@ class Mailing(models.Model):
                     'res_id': record.id,
                     'mass_mailing_id': mass.id,
                     'exception': fields.Datetime.now(),
+                    'trace_status': 'exception',
+                    'state': 'exception',
                     'ws_error_msg_trace': msg,
                     'ws_phone': number,
                 })
@@ -761,9 +765,21 @@ class Mailing(models.Model):
                 else:
                     old_message.error_msg = str(e)
                     if trace_status == 'bounce':
-                        data = {'bounced': fields.Datetime.now(), 'exception': False, 'sent': False}
+                        data = {
+                            'bounced': fields.Datetime.now(),
+                            'exception': False,
+                            'sent': False,
+                            'trace_status': 'bounced',
+                            'state': 'bounced',
+                        }
                     else:
-                        data = {'exception': fields.Datetime.now(), 'bounced': False, 'sent': False}
+                        data = {
+                            'exception': fields.Datetime.now(),
+                            'bounced': False,
+                            'sent': False,
+                            'trace_status': 'exception',
+                            'state': 'exception',
+                        }
                     old_message.mailing_trace_ids.write(data)
             if sent_count == 0:
                 if self.loop_count < 3:
