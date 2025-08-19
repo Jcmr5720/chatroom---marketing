@@ -82,7 +82,8 @@
             Campaigns are the perfect tool to track results across multiple mailings.
             </p>
         </field>
-        <field name="domain">[('is_website', '=', False)]</field>
+        <!-- Domain filter removed: previous version relied on field 'is_website' which no longer exists -->
+        <field name="domain">[]</field>
         <field name="context">{
                 'default_mailing_type': 'whatsapp',
                 'whatsapp_mailing': True
