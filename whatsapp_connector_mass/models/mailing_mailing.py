@@ -181,7 +181,7 @@ class Mailing(models.Model):
                     'model': mass.mailing_model_real,
                     'res_id': message.mailing_res_id,
                     'mass_mailing_id': mass.id,
-                    'sent': fields.Datetime.now(),
+                    'sent_datetime': fields.Datetime.now(),
                     'trace_status': 'sent',
                     'state': 'sent',
                     'ws_message_id': message.id,
@@ -197,7 +197,7 @@ class Mailing(models.Model):
                     'model': record._name,
                     'res_id': record.id,
                     'mass_mailing_id': mass.id,
-                    'exception': fields.Datetime.now(),
+                    'failure_datetime': fields.Datetime.now(),
                     'trace_status': 'exception',
                     'state': 'exception',
                     'ws_error_msg_trace': msg,
@@ -767,16 +767,16 @@ class Mailing(models.Model):
                     if trace_status == 'bounce':
                         data = {
                             'bounced': fields.Datetime.now(),
-                            'exception': False,
-                            'sent': False,
+                            'failure_datetime': False,
+                            'sent_datetime': False,
                             'trace_status': 'bounced',
                             'state': 'bounced',
                         }
                     else:
                         data = {
-                            'exception': fields.Datetime.now(),
+                            'failure_datetime': fields.Datetime.now(),
                             'bounced': False,
-                            'sent': False,
+                            'sent_datetime': False,
                             'trace_status': 'exception',
                             'state': 'exception',
                         }
