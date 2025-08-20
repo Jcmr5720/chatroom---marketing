@@ -14,9 +14,12 @@ class AcruxSendMultiWizard(models.TransientModel):
     body_whatsapp = fields.Text('Message')
     body_whatsapp_html = fields.Html('Html Message', sanitize=False)
     model = fields.Char('Related Document Model', required=True)
-    ws_template_id = fields.Many2one('mail.template', 'Template',
-                                     ondelete='set null',
-                                     domain="[('model', '=', model), ('name', 'ilike', 'ChatRoom')]")
+    ws_template_id = fields.Many2one(
+        'mail.template',
+        'Template',
+        ondelete='set null',
+        domain="[('name', 'ilike', 'ChatRoom'), ('waba_template_id.connector_id', '=', connector_id)]"
+    )
     mark_invoice_as_sent = fields.Boolean('Mark as sent')
     chatter_log = fields.Boolean('Log in chatter')
     put_in_queue = fields.Boolean('Put in queue', default=True)
@@ -60,6 +63,12 @@ class AcruxSendMultiWizard(models.TransientModel):
         else:
             self.body_whatsapp = False
             self.body_whatsapp_html = False
+
+    @api.onchange('connector_id')
+    def onchange_connector_id(self):
+        self.ws_template_id = False
+        if self.connector_id:
+            self.connector_id.update_template_waba()
 
     def send_action(self):
         res_ids = self.env.context.get('active_ids')

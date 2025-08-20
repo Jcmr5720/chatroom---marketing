@@ -51,9 +51,12 @@ class Mailing(models.Model):
     total_ws_sent = fields.Integer(compute='_compute_total_ws', store=False)
     total_ws_pend = fields.Integer(compute='_compute_total_ws', store=False)
     total_ws_contact = fields.Integer(compute='_compute_total_ws', store=False)
-    ws_template_id = fields.Many2one('mail.template', 'Template',
-                                     ondelete='set null',
-                                     domain="[('model', '=', mailing_model_real), ('name', 'ilike', 'ChatRoom')]")
+    ws_template_id = fields.Many2one(
+        'mail.template',
+        'Template',
+        ondelete='set null',
+        domain="[('name', 'ilike', 'ChatRoom'), ('waba_template_id.connector_id', '=', connector_id)]"
+    )
     message_limit = fields.Integer('Messages limit', default=0,
                                    help='Maximum messages number allowed to send in one day.')
     enable_from_hour = fields.Float('Enable From', help='00:00 to 23:59', default=0.0, required=True)
@@ -141,6 +144,12 @@ class Mailing(models.Model):
     @api.onchange('mailing_model_real')
     def onchange_ws_mailing_model_real(self):
         self.ws_template_id = False
+
+    @api.onchange('connector_id')
+    def onchange_connector_id(self):
+        self.ws_template_id = False
+        if self.connector_id:
+            self.connector_id.update_template_waba()
 
     @api.onchange('ws_template_id')
     def onchange_ws_template_id(self):
