@@ -66,5 +66,18 @@
                 action="utm.action_view_utm_tag"
                 sequence="30"
                  />
-                
+
+            <record id="whatsapp_mass_template_action" model="ir.actions.act_window">
+                <field name="name">Message Templates</field>
+                <field name="res_model">mail.template</field>
+                <field name="view_mode">tree,form</field>
+                <field name="domain">[('name', 'ilike', 'ChatRoom')]</field>
+            </record>
+
+            <menuitem id="whatsapp_mass_template_menu"
+                name="Message Templates"
+                parent="whatsapp_mass_menu_configuration"
+                action="whatsapp_mass_template_action"
+                sequence="40"/>
+
 </odoo>
