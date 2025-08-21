@@ -17,7 +17,7 @@
                             <field name="connector_id"/>
                             <field name="put_in_queue"/>
                             <field name="check_unique_contact"/>
-                            <field name="ws_template_id" options="{'no_create': True}"/>
+                            <field name="ws_template_id"/>
                         </group>
                         <group colspan="2" col="1">
                             <label for="body_whatsapp"/>
