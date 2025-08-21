@@ -55,7 +55,7 @@ class Mailing(models.Model):
         'mail.template',
         'Template',
         ondelete='set null',
-        domain="[('name', 'ilike', 'ChatRoom'), ('waba_template_id.connector_id', '=', connector_id)]"
+        domain="['|', ('waba_template_id', '=', False), ('waba_template_id.connector_id', '=', connector_id)]"
     )
     message_limit = fields.Integer('Messages limit', default=0,
                                    help='Maximum messages number allowed to send in one day.')

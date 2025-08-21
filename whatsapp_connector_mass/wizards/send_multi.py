@@ -18,7 +18,7 @@ class AcruxSendMultiWizard(models.TransientModel):
         'mail.template',
         'Template',
         ondelete='set null',
-        domain="[('name', 'ilike', 'ChatRoom'), ('waba_template_id.connector_id', '=', connector_id)]"
+        domain="['|', ('waba_template_id', '=', False), ('waba_template_id.connector_id', '=', connector_id)]"
     )
     mark_invoice_as_sent = fields.Boolean('Mark as sent')
     chatter_log = fields.Boolean('Log in chatter')
@@ -52,7 +52,7 @@ class AcruxSendMultiWizard(models.TransientModel):
             res['name'] = '%s (%s)' % (self.env['ir.model']._get(model).name, date)
         if 'template_id' in default_fields and 'template_id' not in res:
             res['template_id'] = self.env['mail.template'].search(
-                [('model', '=', model), ('name', 'ilike', 'ChatRoom')], limit=1, order='name').id
+                [('model', '=', model)], limit=1, order='name').id
         return res
 
     @api.onchange('ws_template_id')

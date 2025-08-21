@@ -248,7 +248,7 @@
                                     </div>
                                 </group>
                                 <group>
-                                    <field name="ws_template_id" options="{'no_create': True}"
+                                    <field name="ws_template_id"
                                            attrs="{'readonly': [('state', 'in', ('sending', 'done'))]}"/>
                                 </group>
                             </group>

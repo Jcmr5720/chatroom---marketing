@@ -71,7 +71,6 @@
                 <field name="name">Message Templates</field>
                 <field name="res_model">mail.template</field>
                 <field name="view_mode">tree,form</field>
-                <field name="domain">[('name', 'ilike', 'ChatRoom')]</field>
             </record>
 
             <menuitem id="whatsapp_mass_template_menu"
