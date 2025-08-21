@@ -444,7 +444,7 @@ class AcruxChatConnector(models.Model):
             'contact_get_all': 'get',
             'init_free_test': 'post',
             'whatsapp_number_get': 'get',
-            'template_get': 'post',
+            'template_get': 'get',
             'opt_in': 'post',
         }
 
