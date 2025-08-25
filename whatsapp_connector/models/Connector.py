@@ -457,7 +457,7 @@ class AcruxChatConnector(models.Model):
     def hook_request_args(self, args):
         self.ensure_one()
         if args['headers']['action'] == 'status_logout':
-            args['data'] = json.dumps({})  # backwards compatibility
+            args.pop('data', None)
         return args
 
     def ca_request(self, path, data={}, params={}, timeout=False, ignore_exception=False):
