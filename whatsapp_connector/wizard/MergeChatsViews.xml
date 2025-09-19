@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="acrux_chat_merge_chat_wizard_form" model="ir.ui.view">
+            <field name="name">acrux.chat.merge.chat.wizard.form</field>
+            <field name="model">acrux.chat.merge.chat.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Merge Chats">
+                    <div class="text-center"
+                        style="background-color: #f8d7da; padding: 12px 8px 8px; font-size: 14px; color: #721c24">
+                        Warning: This operation cannot be undone.
+                    </div>
+                    <div>
+                        <group>
+                            <field name="connector_id" />
+                            <field name="private_conversation" />
+                            <field name="normal_conversation" />
+                        </group>
+                    </div>
+                    <footer>
+                        <button string="Merge" name="merge_chats" type="object" class="btn-primary" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -46,6 +46,7 @@
         'wizard/MessageWizard.xml',
         'wizard/ScanQr.xml',
         'wizard/SimpleNewConversation.xml',
+        'wizard/MergeChatsViews.xml',
         'views/ir_attachment.xml',
         'views/template_button_views.xml',
         'views/template_list_views.xml',
