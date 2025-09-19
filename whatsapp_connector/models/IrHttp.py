@@ -12,4 +12,5 @@ class IrHttp(models.AbstractModel):
             Config = self.env['ir.config_parameter'].sudo()
             release_conv = Config.get_param('chatroom.release.conv.on.close', 'False') == 'True'
             result['chatroom_release_conv_on_close'] = release_conv
+            result['chatroom_immediate_sending'] = Config.get_param('chatroom_immediate_sending', 'False') == 'True'
         return result

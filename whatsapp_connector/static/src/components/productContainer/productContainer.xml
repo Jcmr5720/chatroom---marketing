@@ -1,66 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+
     <t t-name="chatroom.ProductContainer" owl="1">
         <div class="acrux_ProductContainer" t-attf-class="{{ props.className }}">
             <ChatroomHeader className="'o_product_header'">
-                <div class="d-flex align-items-center o_search_with_filter">
-                    <ChatSearch placeHolder="placeHolder" eventName="'productSearch'" />
-                    <select class="form-select form-select-sm" t-on-change="changeStockFilter">
-                        <option value="positive">Unidades disponibles</option>
-                        <option value="negative">Sin unidades</option>
-                        <option value="all">Todos</option>
-                    </select>
-                </div>
+                <ChatSearch placeHolder="placeHolder" eventName="'productSearch'" />
             </ChatroomHeader>
-
-            <div class="o_product_filters">
-                <label class="me-2">
-                    <input type="checkbox" t-on-change="toggleSearchName" t-att-checked="state.searchName"/>
-                    <span> Nombre</span>
-                </label>
-                <label class="me-2">
-                    <input type="checkbox" t-on-change="toggleSearchDefaultCode" t-att-checked="state.searchDefaultCode"/>
-                    <span> Referencia</span>
-                </label>
-                <label class="me-2">
-                    <input type="checkbox" t-on-change="toggleSearchCategory" t-att-checked="state.searchCategory"/>
-                    <span> Categoría</span>
-                </label>
-                <label>
-                    <input type="checkbox" t-on-change="toggleSearchDescription" t-att-checked="state.searchDescription"/>
-                    <span> Descripción</span>
-                </label>
-            </div>
-
-            <div class="d-flex align-items-start mb-2">
-                <details class="o_cat_details me-2">
-                    <summary class="btn btn-sm btn-outline-secondary">
-                        <span class="when-closed">Mostrar categorías</span>
-                        <span class="when-open">Ocultar categorías</span>
-                    </summary>
-                    <div class="o_product_categories mt-2">
-                        <select class="form-select o_categories_select" multiple="multiple" t-on-change="changeCategories">
-                            <t t-foreach="state.categories" t-as="cat" t-key="cat.id">
-                                <option t-att-value="cat.id" t-att-selected="cat.selected">
-                                    <t t-esc="cat.name"/>
-                                </option>
-                            </t>
-                        </select>
-                    </div>
-                </details>
-                <button class="btn btn-sm btn-outline-secondary" t-on-click="showPromotions">Ver promociones</button>
-            </div>
-
-            <div class="o_product_limit d-flex justify-content-end align-items-center flex-nowrap text-muted">
-                <span class="me-1">Mostrando</span>
-                <input type="number"
-                       min="1"
-                       class="form-control form-control-sm w-4 text-end mx-1"
-                       t-on-change="updateLimit"
-                       t-att-value="state.total"/>
-                <span class="ms-1">/ <t t-esc="state.total"/> resultados</span>
-            </div>
-
             <div class="o_acrux_chat_product_items">
                 <t t-foreach="state.products" t-as="product" t-key="product.id">
                     <Product product="product" />
@@ -68,4 +13,6 @@
             </div>
         </div>
     </t>
+
+
 </templates>

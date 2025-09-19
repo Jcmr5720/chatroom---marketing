@@ -8,7 +8,6 @@ from odoo.osv import expression
 from odoo.exceptions import ValidationError
 from odoo.tools import formatLang
 from odoo.tools.safe_eval import safe_eval
-from urllib.parse import urljoin
 from datetime import datetime, date
 from ..tools import DEFAULT_IMAGE_URL
 from ..tools import get_image_url, get_image_from_url, get_binary_attach
@@ -33,8 +32,11 @@ class AcruxChatConversation(models.Model):
     number = fields.Char('Base number', required=True, index=True)
     number_format = fields.Char('Number', compute='_compute_number_format',
                                 store=True, readonly=True)
-    conv_type = fields.Selection([('none', 'None'), ('normal', 'Normal'), ('private', 'Private')], readonly=False,
+    conv_type = fields.Selection([('none', 'None'),
+                                  ('normal', 'Normal'),
+                                  ('private', 'Private')], readonly=False,
                                  string='Conversation Type', required=True, default='normal')
+    chat_id = fields.Char('Chat ID', index=True, help='Other id for chats')
     image_128 = fields.Image('Avatar', max_width=128, max_height=128)
     image_url = fields.Char('Avatar Url', compute='_image_update', store=True,
                             default=DEFAULT_IMAGE_URL, required=True)
@@ -327,9 +329,7 @@ class AcruxChatConversation(models.Model):
         please_set_to_new = False
         while max_tries < 3:
             max_tries += 1
-            conversation = self.search([('number', '=', data['number']),
-                                        ('conv_type', '=', data['conv_type']),
-                                        ('connector_id', '=', data['connector_id'])])
+            conversation = self.search_conversation_from_message_dict_vals(data)
             if conversation:
                 if conversation.valid_number != 'yes':
                     conversation.valid_number = 'yes'
@@ -346,7 +346,6 @@ class AcruxChatConversation(models.Model):
                         self.env.cr.rollback()
                         sleep(1)
                         continue
-                # conversation.set_to_new()
             if not conversation.res_partner_id and conversation.status in ['new', 'done']:
                 partner_id = self.search_partner_from_number(conversation)
                 if partner_id:
@@ -357,6 +356,18 @@ class AcruxChatConversation(models.Model):
         return conversation
 
     @api.model
+    def search_conversation_from_message_dict_vals(self, data):
+        if data['conv_type'] == 'private':
+            domain = [('connector_id', '=', data['connector_id']),
+                      '|', ('number', '=', data['number']),
+                           ('chat_id', '=', data['number'])]
+        else:
+            domain = [('number', '=', data['number']),
+                      ('conv_type', '=', data['conv_type']),
+                      ('connector_id', '=', data['connector_id'])]
+        return self.search(domain)
+
+    @api.model
     def create_conversation_from_message_dict_vals(self, data):
         return {
             'name': data['name'] or data['number'],
@@ -365,6 +376,7 @@ class AcruxChatConversation(models.Model):
             'is_waba_opt_in': True,
             'number': data['number'],
             'conv_type': data['conv_type'],
+            'chat_id': data['number'],
         }
 
     def decide_first_status(self):
@@ -447,72 +459,6 @@ class AcruxChatConversation(models.Model):
                     conv_id._sendone(conv_id.get_channel_to_many(), 'update_conversation', data_to_send)
         return message_id
 
-    def get_product_url(self, product_id):
-        """Return absolute website URL for given product."""
-        self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url', '')
-        url = product_id.website_url or product_id.product_tmpl_id.website_url or ''
-        return urljoin(base_url, url)
-
-    def get_product_sale(self, product_id):
-        """Return 'yes' if product has active discount promotions, else 'no'."""
-        self.ensure_one()
-        Reward = self.env['loyalty.reward']
-        promo_rewards = Reward.search([
-            ('reward_type', '=', 'discount'),
-            ('discount', '>', 0),
-            ('program_id.program_type', '=', 'promotion'),
-        ])
-        has_discount = False
-        for reward in promo_rewards:
-            if product_id in reward.discount_product_ids:
-                has_discount = True
-            elif reward.discount_product_category_id:
-                category_ids = self.env['product.category'].search([
-                    ('id', 'child_of', reward.discount_product_category_id.ids)
-                ]).ids
-                if product_id.categ_id.id in category_ids:
-                    has_discount = True
-            elif (
-                not reward.discount_product_ids
-                and 'product_id' in Reward._fields
-                and reward.product_id
-                and reward.product_id == product_id
-            ):
-                has_discount = True
-            if has_discount:
-                break
-        return 'yes' if has_discount else 'no'
-
-    def get_product_discount(self, product_id):
-        """Return the discount percentage for the given product."""
-        self.ensure_one()
-        Reward = self.env['loyalty.reward']
-        promo_rewards = Reward.search([
-            ('reward_type', '=', 'discount'),
-            ('discount', '>', 0),
-            ('program_id.program_type', '=', 'promotion'),
-        ])
-        max_discount = 0.0
-        for reward in promo_rewards:
-            discount = reward.discount
-            if product_id in reward.discount_product_ids:
-                max_discount = max(max_discount, discount)
-            elif reward.discount_product_category_id:
-                category_ids = self.env['product.category'].search([
-                    ('id', 'child_of', reward.discount_product_category_id.ids)
-                ]).ids
-                if product_id.categ_id.id in category_ids:
-                    max_discount = max(max_discount, discount)
-            elif (
-                not reward.discount_product_ids
-                and 'product_id' in Reward._fields
-                and reward.product_id
-                and reward.product_id == product_id
-            ):
-                max_discount = max(max_discount, discount)
-        return max_discount
-
     def get_product_caption(self, product_id):
         self.ensure_one()
         if not product_id:
@@ -527,9 +473,6 @@ class AcruxChatConversation(models.Model):
                 'format_price': format_price,
                 'product_id': product_id,
                 'conversation_id': self,
-                'product_url': self.get_product_url(product_id),
-                'sale_status': self.get_product_sale(product_id),
-                'sale_var': self.get_product_discount(product_id),
                 'text': ''
             }
             safe_eval(product_caption, locals_dict=local_dict, mode='exec', nocopy=True)
@@ -767,207 +710,24 @@ class AcruxChatConversation(models.Model):
 
     @api.model
     def get_product_fields_to_read(self):
-        fields_search = [
-            'id', 'display_name', 'lst_price', 'uom_id',
-            'write_date', 'product_tmpl_id', 'name', 'type', 'default_code',
-            'categ_id',
-        ]
+        fields_search = ['id', 'display_name', 'lst_price', 'uom_id',
+                         'write_date', 'product_tmpl_id', 'name', 'type', 'default_code']
         if 'qty_available' in self.env['product.product']._fields:
             fields_search.append('qty_available')
-        if 'quantity_total' in self.env['product.product']._fields:
-            fields_search.append('quantity_total')
         return fields_search
 
     @api.model
-    def search_product(self, string, filters=None, limit=32):
-        filters = filters or {}
-        string = (string or '').strip()
-
-        if filters.get('promotions'):
-            ProductProduct = self.env['product.product']
-            Reward = self.env['loyalty.reward']
-            fields_search = self.get_product_fields_to_read()
-            promo_rewards = Reward.search([
-                ('reward_type', '=', 'discount'),
-                ('discount', '>', 0),
-                ('program_id.program_type', '=', 'promotion'),
-            ])
-
-            product_discounts = {}
-            for reward in promo_rewards:
-                discount = reward.discount
-                for prod in reward.discount_product_ids:
-                    product_discounts[prod.id] = max(
-                        product_discounts.get(prod.id, 0), discount
-                    )
-                if reward.discount_product_category_id:
-                    prods = ProductProduct.search([
-                        ('categ_id', 'child_of', reward.discount_product_category_id.ids)
-                    ])
-                    for prod in prods:
-                        product_discounts[prod.id] = max(
-                            product_discounts.get(prod.id, 0), discount
-                        )
-                if (
-                    not reward.discount_product_ids
-                    and 'product_id' in Reward._fields
-                    and reward.product_id
-                ):
-                    product_discounts[reward.product_id.id] = max(
-                        product_discounts.get(reward.product_id.id, 0), discount
-                    )
-
-            product_ids = list(product_discounts.keys())
-            req_limit = filters.get('limit', limit)
-            if req_limit in (None, '', 'none', 'None', 'all', 'ALL', 0, '0', False):
-                use_limit = None
-            else:
-                try:
-                    req_limit = int(req_limit)
-                    use_limit = req_limit if req_limit > 0 else None
-                except Exception:
-                    use_limit = None
-            out = ProductProduct.search_read(
-                [('id', 'in', product_ids)],
-                fields_search,
-                order='name, list_price',
-                limit=use_limit,
-            )
-            for prod in out:
-                prod['is_promotion'] = True
-                prod['discount_percentage'] = product_discounts.get(prod['id'], 0)
-            categories = {
-                prod['categ_id'][0]: prod['categ_id'][1]
-                for prod in out
-                if prod.get('categ_id')
-            }
-            categories_list = [
-                {'id': cid, 'name': cname} for cid, cname in categories.items()
-            ]
-            total = len(product_ids)
-            return {
-                'products': out,
-                'total': total,
-                'limit': use_limit if use_limit is not None else total,
-                'categories': categories_list,
-            }
-
-        if not string:
-            return {
-                'products': [],
-                'total': 0,
-                'limit': 0,
-                'categories': [],
-            }
-
+    def search_product(self, string):
         ProductProduct = self.env['product.product']
         domain = [('sale_ok', '=', True)]
-
-        stock_filter = filters.get('stock_filter')
-        if not stock_filter and filters.get('available'):
-            stock_filter = 'positive'
-        if stock_filter and 'qty_available' in ProductProduct._fields:
-            if stock_filter == 'positive':
-                domain.append(('qty_available', '>', 0))
-            elif stock_filter == 'negative':
-                domain.append(('qty_available', '<=', 0))
-
-        if string.startswith('/cat '):
-            domain += [('categ_id.complete_name', 'ilike', string[5:].strip())]
-        else:
-            search_name = filters.get('search_name')
-            search_description = filters.get('search_description')
-            search_default_code = filters.get('search_default_code')
-            search_categ_id = filters.get('search_categ_id')
-            if search_name or search_description or search_default_code or search_categ_id:
-                exprs = []
-                if search_name:
-                    exprs.append([('product_tmpl_id.name', 'ilike', string)])
-                if search_description:
-                    exprs.append([('product_tmpl_id.description', 'ilike', string)])
-                if search_default_code:
-                    exprs.append([('default_code', 'ilike', string)])
-                if search_categ_id:
-                    exprs.append([('categ_id.complete_name', 'ilike', string)])
-                if exprs:
-                    domain += expression.OR(exprs)
+        if string:
+            if string.startswith('/cat '):
+                domain += [('categ_id.complete_name', 'ilike', string[5:].strip())]
             else:
                 domain += ['|', ('name', 'ilike', string), ('default_code', 'ilike', string)]
-    
         fields_search = self.get_product_fields_to_read()
-    
-        total = ProductProduct.search_count(domain)
-    
-        req_limit = filters.get('limit', None)
-        if req_limit in (None, '', 'none', 'None', 'all', 'ALL', 0, '0'):
-            use_limit = None
-        else:
-            try:
-                req_limit = int(req_limit)
-                use_limit = req_limit if req_limit > 0 else None
-            except Exception:
-                use_limit = None
-
-        out = ProductProduct.search_read(domain, fields_search, order='name, list_price', limit=use_limit)
-
-        # Mark products that have active discount promotions so the frontend
-        # can display the promotion badge even in the normal product search.
-        Reward = self.env['loyalty.reward']
-        promo_rewards = Reward.search([
-            ('reward_type', '=', 'discount'),
-            ('discount', '>', 0),
-            ('program_id.program_type', '=', 'promotion'),
-        ])
-        if promo_rewards:
-            product_discounts = {}
-            out_ids = [p['id'] for p in out]
-            for reward in promo_rewards:
-                discount = reward.discount
-                for prod in reward.discount_product_ids:
-                    if prod.id in out_ids:
-                        product_discounts[prod.id] = max(
-                            product_discounts.get(prod.id, 0), discount
-                        )
-                if reward.discount_product_category_id:
-                    category_ids = self.env['product.category'].search([
-                        ('id', 'child_of', reward.discount_product_category_id.ids)
-                    ]).ids
-                    for prod in out:
-                        if (
-                            prod.get('categ_id')
-                            and prod['categ_id'][0] in category_ids
-                        ):
-                            product_discounts[prod['id']] = max(
-                                product_discounts.get(prod['id'], 0), discount
-                            )
-                if (
-                    not reward.discount_product_ids
-                    and 'product_id' in Reward._fields
-                    and reward.product_id
-                    and reward.product_id.id in out_ids
-                ):
-                    product_discounts[reward.product_id.id] = max(
-                        product_discounts.get(reward.product_id.id, 0), discount
-                    )
-            for prod in out:
-                discount = product_discounts.get(prod['id'])
-                if discount:
-                    prod['is_promotion'] = True
-                    prod['discount_percentage'] = discount
-
-        categories = {
-            prod['categ_id'][0]: prod['categ_id'][1]
-            for prod in out
-            if prod.get('categ_id')
-        }
-        categories_list = [{'id': cid, 'name': cname} for cid, cname in categories.items()]
-    
-        return {
-            'products': out,
-            'total': total,
-            'limit': use_limit if use_limit is not None else total,
-            'categories': categories_list,
-        }
+        out = ProductProduct.search_read(domain, fields_search, order='name, list_price', limit=32)
+        return out
 
     def init_and_notify(self):
         self.ensure_one()
@@ -1072,14 +832,12 @@ class AcruxChatConversation(models.Model):
 
     @api.model
     def parse_event_receive(self, connector_id, event):
-        if event.get('type') == 'failed':
+        if event.get('type') in ('failed', 'edited'):
             out = {
                 'type': event.get('type'),
                 'msgid': event.get('msgid'),
                 'reason': event.get('txt'),
             }
-        elif event.get('type') == 'phone-status':
-            out = event
         else:
             out = event
         return out
@@ -1087,10 +845,11 @@ class AcruxChatConversation(models.Model):
     @api.model
     def new_webhook_event(self, connector_id, event):
         ttype = event.get('type')
-        if ttype == 'failed':
+        if ttype in ('failed', 'edited'):
             if event['msgid'] and event['reason']:
                 self.new_message_event(connector_id, event['msgid'], event)
-            _logger.warning(event)
+            if ttype == 'failed':
+                _logger.warning(event)
         elif ttype == 'phone-status':
             connector_id.ca_status_change(event.get('status'))
         elif ttype == 'pending' and connector_id.connector_type == 'gupshup':
@@ -1217,4 +976,14 @@ class AcruxChatConversation(models.Model):
         Config = self.env['ir.config_parameter'].sudo()
         return {
             'chatroom_tab_orientation': Config.get_param('chatroom_tab_orientation')
+        }
+
+    def merge_chats_wizard(self):
+        return {
+            'name': _('Merge Chats'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'acrux.chat.merge.chat.wizard',
+            'target': 'new',
+            'context': dict(default_private_conversation=self.id)
         }

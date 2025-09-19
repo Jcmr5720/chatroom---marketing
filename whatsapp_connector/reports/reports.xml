@@ -17,5 +17,21 @@
         <field name="domain">[('event', '!=', False)]</field>
     </record>
 
-    
+    <menuitem name="ChatRoom Analysis" id="menu_chatroom_report_root"
+              parent="mail.menu_root_discuss"
+              sequence="4"
+              groups="whatsapp_connector.group_chat_basic_extra"/>
+    <menuitem action="view_conversation_init_report_action"
+              id="view_conversation_init_report_menu"
+              parent="menu_chatroom_report_root"
+              sequence="10"/>
+    <menuitem name="Message Analysis" id="menu_chatroom_report_event_pivot"
+              action="act_event_graph"
+              parent="menu_chatroom_report_root"
+              sequence="5"/>
+    <menuitem name="Answer Time Analysis" id="view_agent_answer_time_report_menu"
+              action="view_agent_answer_time_report_action"
+              parent="menu_chatroom_report_root"
+              sequence="5"/>
+
 </odoo>

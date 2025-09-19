@@ -43,6 +43,7 @@
                           class="o_chat_space" />
                 </div>
                 <div class="o_chat_tool_and_hour d-flex justify-content-end align-items-baseline">
+                    <span class="o_chat_edited_lable mx-2" t-if="message.editedDate">Edited</span>
                     <t t-if="canTranslate and !props.noAction">
                         <a href="#" class="o_acrux_translate" title="Translate"
                             t-on-click="onTranslate">

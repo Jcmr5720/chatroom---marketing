@@ -7,7 +7,6 @@ import requests
 import logging
 import mimetypes
 import re
-import sys
 from os.path import basename
 from datetime import date, datetime, timedelta
 import phonenumbers
@@ -15,7 +14,6 @@ from PIL import Image
 from odoo import fields, _, SUPERUSER_ID
 from odoo.exceptions import UserError
 from odoo.tools import image_process, image_to_base64, DEFAULT_SERVER_DATETIME_FORMAT
-
 _logger = logging.getLogger(__name__)
 
 TIMEOUT = (10, 20)
@@ -27,15 +25,11 @@ def log_request_error(param, req=None):
     try:
         param = json.dumps(param, indent=4, sort_keys=True, ensure_ascii=False)[:1000]
         if req is not None:
-            _logger.error(
-                '\nSTATUS: %s\nSEND: %s\nRESULT: %s',
-                req.status_code,
-                req.request.headers,
-                req.text and req.text[:1000],
-            )
+            _logger.error('\nSTATUS: %s\nSEND: %s\nRESULT: %s' %
+                          (req.status_code, req.request.headers, req.text and req.text[:1000]))
     except Exception:
         pass
-    _logger.error(param, exc_info=bool(sys.exc_info()[0]))
+    _logger.error(param, exc_info=True)
 
 
 def date2sure_str(value):

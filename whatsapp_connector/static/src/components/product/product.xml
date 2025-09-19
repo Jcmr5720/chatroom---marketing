@@ -14,39 +14,20 @@
                     </div>
                     <ul>
                         <li>
-                            <t t-if="props.product.lstPrice or props.product.qtyAvailabletecno">
+                            <t t-if="props.product.lstPrice or props.product.qtyAvailable">
                                 <span t-if="props.product.lstPrice" class="o_field_monetary o_field_number o_field_widget" name="lst_price">
                                     <t t-esc="formatPrice(props.product.lstPrice)" />
                                 </span>
-                                <t t-if="props.product.isPromotion">
-                                    <span class="badge bg-danger ms-1 text-white">
-                                        SALE
-                                        <t t-if="props.product.discountPercentage">
-                                            <t t-esc="props.product.discountPercentage" />%
-                                        </t>
-                                    </span>
-                                </t>
                                 <t t-if="props.product.type == 'product'">
-                                    <t t-if="props.product.qtyAvailabletecno > 0.0"><t t-set="fcolor" t-value="'text-muted'"/></t>
+                                    <t t-if="props.product.qtyAvailable > 0.0"><t t-set="fcolor" t-value="'text-muted'"/></t>
                                     <t t-else=""><t t-set="fcolor" t-value="'acrux_red_text'"/></t>
                                     <span t-att-class="fcolor">
-                                        (<t t-esc="props.product.qtyAvailabletecno"/>
+                                        (<t t-esc="props.product.qtyAvailable"/>
                                         <span t-if="props.product.uom.id" t-esc="props.product.uom.name.substring(0, 4)" style="margin-left: 3px;"/>)
                                     </span>
                                 </t>
                             </t>
                         </li>
-                        <t t-if="props.product.type == 'product'">
-                            <li class="small">
-                                <span><strong>SAN:</strong> <strong><t t-esc="props.product.qtyLocation"/></strong> <strong>UND</strong></span>
-                            </li>
-                            <li class="small">
-                                <span><strong>TUL:</strong> <strong><t t-esc="props.product.qtyTulipanes"/></strong> <strong>UND</strong></span>
-                            </li>
-                            <li class="small">
-                                <span><strong>NEU:</strong> <strong><t t-esc="props.product.qtyNeutron"/></strong> <strong>UND</strong></span>
-                            </li>
-                        </t>
                         <li class="small" style="color: #858585;">
                             <span t-if="props.product.defaultCode">
                                 <t t-esc="props.product.defaultCode"/>

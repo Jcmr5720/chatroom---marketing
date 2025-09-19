@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-04 13:29+0000\n"
-"PO-Revision-Date: 2025-03-04 13:29+0000\n"
+"POT-Creation-Date: 2025-09-01 22:03+0000\n"
+"PO-Revision-Date: 2025-09-01 22:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -275,6 +275,12 @@ msgstr ""
 "\"Consultar estatus o leer QR\".</p>"
 
 #. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_conversation_chatroom_form
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_conversation_form_admin
+msgid "<span class=\"o_stat_info\">Merge</span>"
+msgstr "<span class=\"o_stat_info\">Unir</span>"
+
+#. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.res_partner_form_view
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_conversation_form_admin
 msgid "<span class=\"o_stat_info\">Send</span>"
@@ -368,7 +374,6 @@ msgstr "Interfaz IA Test"
 #, python-format
 msgid "AI Manual Queries"
 msgstr "IA Consultas Manuales"
-
 
 #. module: whatsapp_connector
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_ai_config__ai_model_id
@@ -850,6 +855,7 @@ msgid "Call"
 msgstr "Llamada"
 
 #. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_message_wizard_form
 msgid "Cancel"
 msgstr "Cancelar"
@@ -918,6 +924,11 @@ msgstr "Embudo Chat"
 #, python-format
 msgid "Chat Funnels"
 msgstr "Embudos de Chat"
+
+#. module: whatsapp_connector
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation__chat_id
+msgid "Chat ID"
+msgstr ""
 
 #. module: whatsapp_connector
 #: model:ir.model,name:whatsapp_connector.model_acrux_chat_message_list_item_button
@@ -998,6 +1009,11 @@ msgid "ChatRoom Live"
 msgstr "ChatRoom en Vivo"
 
 #. module: whatsapp_connector
+#: model:ir.model,name:whatsapp_connector.model_acrux_chat_merge_chat_wizard
+msgid "ChatRoom Merge Chats"
+msgstr "ChatRoom Unir Chats"
+
+#. module: whatsapp_connector
 #: model:ir.model,name:whatsapp_connector.model_acrux_chat_message_wizard
 msgid "ChatRoom Message"
 msgstr "Mensaje ChatRoom"
@@ -1040,6 +1056,13 @@ msgstr "ChatRoom: Verificar Conversación"
 #: model:ir.model,name:whatsapp_connector.model_acrux_chat_conversation_stage
 msgid "Chatroom Funnels"
 msgstr "Embudos Chatroom"
+
+#. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.res_config_settings_view_form
+msgid "Chatroom UI speeds up with deferred sending. Disable to speed up."
+msgstr ""
+"La interfaz de Chatroom se acelera con el envío diferido. Desactívala para "
+"acelerar."
 
 #. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.res_config_settings_view_form
@@ -1193,6 +1216,7 @@ msgstr "Instrucciones para conectar"
 #. module: whatsapp_connector
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_connector_scanqr_wizard__connector_id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation__connector_id
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__connector_id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__connector_id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_simple_new_conversation_wizard__connector_id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_template_waba__connector_id
@@ -1414,6 +1438,7 @@ msgstr "Crear/Actua. Plantilla Mail"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__create_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__create_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__create_uid
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__create_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__create_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__create_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__create_uid
@@ -1450,6 +1475,7 @@ msgstr "Creado en"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__create_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__create_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__create_date
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__create_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__create_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__create_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__create_date
@@ -1523,6 +1549,11 @@ msgid "Default value if not defined in the user."
 msgstr "Valor por defecto si no está definido en el usuario."
 
 #. module: whatsapp_connector
+#: model:ir.model.fields,field_description:whatsapp_connector.field_res_config_settings__chatroom_immediate_sending
+msgid "Deferred messages sending in Chatroom"
+msgstr "Envío diferido de mensajes en Chatroom"
+
+#. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_ai_config_form
 msgid "Definition"
 msgstr "Definición"
@@ -1575,6 +1606,7 @@ msgstr "Desconectado"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__display_name
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__display_name
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__display_name
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__display_name
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__display_name
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__display_name
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__display_name
@@ -1611,6 +1643,18 @@ msgstr "Descargar aquí"
 #, python-format
 msgid "Edit"
 msgstr "Editar"
+
+#. module: whatsapp_connector
+#. odoo-javascript
+#: code:addons/whatsapp_connector/static/src/components/message/message.xml:0
+#, python-format
+msgid "Edited"
+msgstr "Editado"
+
+#. module: whatsapp_connector
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__edited_date
+msgid "Edited Date"
+msgstr "Fecha Edición"
 
 #. module: whatsapp_connector
 #: model:acrux.chat.ai.config.operation,name:whatsapp_connector.data_config_operation_edits
@@ -2101,6 +2145,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__id
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__id
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__id
@@ -2203,6 +2248,11 @@ msgstr ""
 #: model:ir.model.fields.selection,name:whatsapp_connector.selection__acrux_chat_message__ttype__image
 msgid "Image"
 msgstr "Imagen"
+
+#. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.res_config_settings_view_form
+msgid "Immediate Sending"
+msgstr "Envío Inmediato"
 
 #. module: whatsapp_connector
 #. odoo-javascript
@@ -2416,6 +2466,7 @@ msgstr "Últimos 6 Meses"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag____last_update
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer____last_update
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button____last_update
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard____last_update
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message____last_update
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button____last_update
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list____last_update
@@ -2462,6 +2513,7 @@ msgstr "Último Recibido"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__write_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__write_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__write_uid
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__write_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__write_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__write_uid
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__write_uid
@@ -2493,6 +2545,7 @@ msgstr "Última actualización por"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_tag__write_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_answer__write_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_default_message_button__write_date
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__write_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message__write_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_button__write_date
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_message_list__write_date
@@ -2620,6 +2673,19 @@ msgstr "Max Tokens debe ser mayor o igual que 0."
 #: model:ir.model.fields.selection,name:whatsapp_connector.selection__acrux_chat_conversation__priority__1
 msgid "Medium"
 msgstr "Medio"
+
+#. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
+msgid "Merge"
+msgstr "Unir"
+
+#. module: whatsapp_connector
+#. odoo-python
+#: code:addons/whatsapp_connector/models/Conversation.py:0
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
+#, python-format
+msgid "Merge Chats"
+msgstr "Unir Chats"
 
 #. module: whatsapp_connector
 #. odoo-python
@@ -3145,6 +3211,11 @@ msgid "Options may be up 10 and at least one."
 msgstr "Las opciones pueden ser hasta 10 y al menos una."
 
 #. module: whatsapp_connector
+#: model:ir.model.fields,help:whatsapp_connector.field_acrux_chat_conversation__chat_id
+msgid "Other id for chats"
+msgstr "Otro id para chats"
+
+#. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.res_config_settings_view_form
 msgid "PACK: Send from many places with Templates"
 msgstr "PACK: Envía desde muchos lugares con Plantillas"
@@ -3225,6 +3296,11 @@ msgid "Private"
 msgstr "Privado"
 
 #. module: whatsapp_connector
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__private_conversation
+msgid "Private Chat"
+msgstr "Chat Privado"
+
+#. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_scanqr_wizard
 msgid "Problem?"
 msgstr "Problema?"
@@ -3260,6 +3336,11 @@ msgstr "Un propuesta es requerida."
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_ai_usage_log_search
 msgid "Provider"
 msgstr "Proveedor"
+
+#. module: whatsapp_connector
+#: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_merge_chat_wizard__normal_conversation
+msgid "Public Chat"
+msgstr "Chat Público"
 
 #. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_whatsapp_connector_ai_config_form
@@ -3404,6 +3485,13 @@ msgstr "Solicitar Opt-in"
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_ai_interface_test__req_text
 msgid "Request Text"
 msgstr "Petición"
+
+#. module: whatsapp_connector
+#. odoo-python
+#: code:addons/whatsapp_connector/wizard/MergeChats.py:0
+#, python-format
+msgid "Required field is missing."
+msgstr "Falta campo requerido."
 
 #. module: whatsapp_connector
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation_stage__requirements
@@ -3628,6 +3716,11 @@ msgid ""
 msgstr ""
 "Lo siento, no puede enviar mensajes.\n"
 "%s no está conectado."
+
+#. module: whatsapp_connector
+#: model:ir.model.fields,help:whatsapp_connector.field_res_config_settings__chatroom_immediate_sending
+msgid "Speed up chatroom UI."
+msgstr "Acelera la interfaz en Chatroom"
 
 #. module: whatsapp_connector
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_conversation__stage_id
@@ -4078,7 +4171,7 @@ msgstr "Traducir al %s:"
 #. module: whatsapp_connector
 #: model:acrux.chat.ai.config,name:whatsapp_connector.data_ai_config_2
 msgid "Translate to English"
-msgstr "Traducir a Español"
+msgstr "Traducir al Español"
 
 #. module: whatsapp_connector
 #: model:acrux.chat.ai.config,command:whatsapp_connector.data_ai_config_2
@@ -4283,6 +4376,11 @@ msgstr "Plantilla Waba"
 #, python-format
 msgid "Waiting"
 msgstr "Esperando"
+
+#. module: whatsapp_connector
+#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
+msgid "Warning: This operation cannot be undone."
+msgstr "Advertencia: Esta operación no se puede deshacer."
 
 #. module: whatsapp_connector
 #: model_terms:ir.ui.view,arch_db:whatsapp_connector.view_init_free_test_wizard

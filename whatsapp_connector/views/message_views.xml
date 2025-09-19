@@ -10,6 +10,7 @@
                 <field name="contact_id"/>
                 <field name="ttype"/>
                 <field name="date_message"/>
+                <field name="edited_date" />
                 <field name="event"/>
                 <field name="create_uid" groups="whatsapp_connector.group_chat_show_user_in_message" />
                 <filter string="This Month" name="this_month"
@@ -47,6 +48,7 @@
                 <field name="ttype"/>
                 <field name="from_me"/>
                 <field name="date_message"/>
+                <field name="edited_date" />
                 <field name="user_id"/>
                 <field name="event"/>
                 <field name="create_uid" groups="whatsapp_connector.group_chat_show_user_in_message" />
@@ -98,6 +100,7 @@
                             <field name="user_id"/>
                             <field name="contact_id"/>
                             <field name="date_message"/>
+                            <field name="edited_date" />
                             <field name="name" invisible="1"/>
                             <field name="ttype"/>
                             <field name="event"/>

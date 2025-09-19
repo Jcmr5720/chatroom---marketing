@@ -88,6 +88,13 @@
                                 <div class="mb16">
                                     <field name="chatroom_hide_branding" widget="boolean_toggle" />
                                 </div>
+                                <h6>Immediate Sending</h6>
+                                <div class="text-muted">
+                                    Chatroom UI speeds up with deferred sending. Disable to speed up.
+                                </div>
+                                <div class="mb16">
+                                    <field name="chatroom_immediate_sending" widget="boolean_toggle" />
+                                </div>
                             </div>
                         </div>
                     </div>

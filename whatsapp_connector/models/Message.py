@@ -24,6 +24,7 @@ class AcruxChatMessages(models.Model):
                                    string='Connector', store=True, readonly=True)
     date_message = fields.Datetime('Date', required=True, default=fields.Datetime.now, copy=False)
     read_date = fields.Datetime('Read Date', index=True, copy=False)
+    edited_date = fields.Datetime('Edited Date', copy=False, readonly=True)
     from_me = fields.Boolean('Message From Me', index=True)
     company_id = fields.Many2one('res.company', related='contact_id.company_id',
                                  string='Company', store=True, readonly=True)
@@ -176,7 +177,7 @@ class AcruxChatMessages(models.Model):
         return ['id', 'contact_id', 'text', 'ttype', 'date_message', 'from_me', 'res_model',
                 'res_id', 'error_msg', 'show_product_text', 'title_color',
                 'user_id', 'metadata_type', 'metadata_json', 'button_ids', 'create_uid',
-                'chat_list_id', 'transcription', 'traduction']
+                'chat_list_id', 'transcription', 'traduction', 'edited_date', 'is_product']
 
     def get_js_dict(self, fields_to_read: List[str] = None, load='_classic_read'):
         if not fields_to_read:
@@ -535,21 +536,29 @@ class AcruxChatMessages(models.Model):
 
     def process_metadata_gupshup(self, data):
         self.ensure_one()
-        self.metadata_type = 'button_replay'
+        if not self.process_metadata_apichat(data):
+            self.metadata_type = 'button_replay'
 
     def process_metadata_apichat(self, data):
         self.ensure_one()
+        flag = True
         if data['metadata'].get('type') == 'button_replay':
             self.metadata_type = 'button_replay'
         elif data['metadata'].get('type') == 'post':
             self.metadata_type = 'apichat_preview_post'
         elif data['metadata'].get('type') == 'ad':
             self.metadata_type = 'ad'
+        else:
+            flag = False
+        return flag
 
     def process_message_event(self, data):
         self.ensure_one()
         if data['type'] == 'failed':
             self.error_msg = data['reason']
+        elif data['type'] == 'edited':
+            self.text = data['reason']
+            self.edited_date = fields.Datetime.now()
 
     @api.constrains('button_ids', 'connector_id', 'ttype')
     def _constrains_button_ids(self):

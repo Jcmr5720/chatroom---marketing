@@ -26,6 +26,9 @@ class ResConfigSettings(models.TransientModel):
                                                 config_parameter='chatroom_tab_orientation', default='vertical',
                                                 required=True)
     chatroom_hide_branding = fields.Boolean('Hide Branding', config_parameter='chatroom.hide.branding')
+    chatroom_immediate_sending = fields.Boolean(string='Deferred messages sending in Chatroom',
+                                                config_parameter='chatroom_immediate_sending',
+                                                help='Speed up chatroom UI.')
 
     @api.depends('acrux_chat_base_url')
     def _compute_acrux_chat_check_base_url(self):
