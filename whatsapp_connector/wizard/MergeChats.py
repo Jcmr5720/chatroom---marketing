@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -15,6 +15,32 @@ class AcruxMergeChatsWizard(models.TransientModel):
                                           domain=("[('connector_id', '=', connector_id),"
                                                   "('conv_type', '=', 'normal'),"
                                                   "('id', '!=', private_conversation)]"))
+
+    @api.model
+    def _ensure_table_exists(self):
+        """Create the transient table when it is missing."""
+        self.env.cr.execute('SELECT to_regclass(%s)', (self._table,))
+        if self.env.cr.fetchone()[0]:
+            return
+        self.env.cr.execute(
+            f'''
+            CREATE TABLE IF NOT EXISTS "{self._table}" (
+                id SERIAL NOT NULL PRIMARY KEY,
+                create_date timestamp,
+                create_uid int4,
+                write_date timestamp,
+                write_uid int4,
+                private_conversation int4,
+                connector_id int4,
+                normal_conversation int4
+            )
+            '''
+        )
+
+    @api.model
+    def default_get(self, fields_list):
+        self._ensure_table_exists()
+        return super().default_get(fields_list)
 
     def merge_chats(self):
         if not self.private_conversation:
@@ -55,7 +81,5 @@ class AcruxMergeChatsWizard(models.TransientModel):
 
     def _transient_clean_rows_older_than(self, seconds):
         """Ensure the transient table exists before letting the base logic clean it."""
-        self.env.cr.execute('SELECT to_regclass(%s)', (self._table,))
-        if not self.env.cr.fetchone()[0]:
-            return
+        self._ensure_table_exists()
         return super()._transient_clean_rows_older_than(seconds)
