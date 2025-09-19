@@ -1,0 +1,14 @@
+
+.acrux_ProductContainer {
+    display: flex;
+    flex-direction: column;
+
+    .o_product_header {
+        background: transparent;
+        border: 0;
+    }
+
+    .o_acrux_chat_product_items {
+        @extend %-card-container;
+    }
+}

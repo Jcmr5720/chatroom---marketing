@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="chatroom.Toolbox" owl="1">
+        <div class="acrux_Toolbox"
+            t-attf-class="{{ props.selectedConversation ? '': 'd-none' }}"
+            t-ref="toolboxRef">
+            <div class="o_chat_toolbox_main">
+                <button class="btn btn-sm btn-success o_chat_toolbox_write" type="button"
+                    t-attf-class="{{ conversationNotMine }}"
+                    t-on-click="blockClient">
+                    Attend
+                </button>
+                <button class="btn btn-sm acrux_btn_danger o_chat_toolbox_done" type="button"
+                    t-attf-class="{{ conversationMine }}" title="Close"
+                    t-on-click="releaseClient"
+                    t-ref="releaseBtnRef">
+                        <i class="fa fa-flip-horizontal fa-sign-out"/>
+                </button>
+                <div class="o_chat_toolbox_container"
+                    t-attf-class="{{ conversationMine }}"
+                    t-ref="toolboxContainerRef">
+                    <div class="o_chat_toolbox_input my-2"
+                        t-attf-class="{{ allowTranslate }}">
+                        <textarea class="o_input o_chat_toolbox_text_field o_chat_toolbox_text_translated"
+                            placeholder="Translate text..." t-ref="inputLangRef"
+                            t-on-paste="onPaste"
+                            t-on-keypress="onKeypress"
+                            t-on-keydown="onKeydown"
+                            t-on-input="onInput" />
+                    </div>
+                    <div class="o_chat_toolbox_input">
+                        <textarea class="o_input o_chat_toolbox_text_field"
+                            placeholder="Write Something..." t-ref="inputRef"
+                            t-on-paste="onPaste"
+                            t-on-keypress="onKeypress"
+                            t-on-keydown="onKeydown"
+                            t-on-input="onInput" />
+                    </div>
+                </div>
+                <div class="d-flex flex-column h-100 justify-content-between" t-attf-class="{{ conversationMine }}"
+                    t-ref="btnOptionsRef">
+                    <div class="d-flex flex-column">
+                        <div class="o_chat_toolbox_lang_selector p-2"
+                            t-attf-class="{{ hasManyLangs }}" t-ref="langSelectorRef">
+                            <LangSelectorAdapter Component="widgetComponents.LangSelector" 
+                                selectedConversation="props.selectedConversation" />
+                        </div>
+                        <div class="o_chat_toolbox_button_box">
+                            <button class="o_chat_button_translate o_chat_option_button"
+                                t-on-click="onTranslate" type="button"
+                                t-attf-class="{{ allowTranslate }}"
+                                t-ref="translateBtnRef"
+                                title="Translate text">
+                                <i class="fa fa-language"/>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <div class="o_chat_toolbox_message_signing pt-2"
+                            t-attf-class="{{ allowSign }}">
+                            <label for="signing_active" class="form-check-label px-2">
+                                Sign
+                            </label>
+                            <CheckBox onChange.bind="updateSigning" value="props.user.signingActive"
+                                className="'o_field_boolean o_boolean_toggle form-switch d-inline-block'" />
+                        </div>
+                        <div class="o_chat_toolbox_button_box">
+                            <button class="o_chat_button_emoji o_chat_option_button"
+                                t-on-click="toggleEmojis" type="button"
+                                t-ref="emojisBtnRef">
+                                <i class="fa fa-smile-o"/>
+                            </button>
+                            <button class="o_chat_button_add_attachment o_chat_option_button"
+                                t-on-click="addAttachment" type="button"
+                                t-ref="attachBtnRef">
+                                <i class="fa fa-paperclip"/>
+                            </button>
+                            <button class="o_chat_toolbox_send"
+                                t-on-click="sendMessage" type="button"
+                                t-ref="sendBtnRef">
+                                <i class="fa fa-telegram"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div t-attf-class="{{ conversationMine }}">
+                <AttachmentUpload attachList="attachList"
+                    selectedConversation="props.selectedConversation" />
+            </div>
+        </div>
+    </t>
+
+</templates>
