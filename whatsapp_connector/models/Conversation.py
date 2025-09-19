@@ -35,6 +35,7 @@ class AcruxChatConversation(models.Model):
                                 store=True, readonly=True)
     conv_type = fields.Selection([('none', 'None'), ('normal', 'Normal'), ('private', 'Private')], readonly=False,
                                  string='Conversation Type', required=True, default='normal')
+    chat_id = fields.Char('Chat ID', index=True, help='Other id for chats')
     image_128 = fields.Image('Avatar', max_width=128, max_height=128)
     image_url = fields.Char('Avatar Url', compute='_image_update', store=True,
                             default=DEFAULT_IMAGE_URL, required=True)
@@ -327,9 +328,7 @@ class AcruxChatConversation(models.Model):
         please_set_to_new = False
         while max_tries < 3:
             max_tries += 1
-            conversation = self.search([('number', '=', data['number']),
-                                        ('conv_type', '=', data['conv_type']),
-                                        ('connector_id', '=', data['connector_id'])])
+            conversation = self.search_conversation_from_message_dict_vals(data)
             if conversation:
                 if conversation.valid_number != 'yes':
                     conversation.valid_number = 'yes'
@@ -357,6 +356,18 @@ class AcruxChatConversation(models.Model):
         return conversation
 
     @api.model
+    def search_conversation_from_message_dict_vals(self, data):
+        if data['conv_type'] == 'private':
+            domain = [('connector_id', '=', data['connector_id']),
+                      '|', ('number', '=', data['number']),
+                           ('chat_id', '=', data['number'])]
+        else:
+            domain = [('number', '=', data['number']),
+                      ('conv_type', '=', data['conv_type']),
+                      ('connector_id', '=', data['connector_id'])]
+        return self.search(domain)
+
+    @api.model
     def create_conversation_from_message_dict_vals(self, data):
         return {
             'name': data['name'] or data['number'],
@@ -365,6 +376,7 @@ class AcruxChatConversation(models.Model):
             'is_waba_opt_in': True,
             'number': data['number'],
             'conv_type': data['conv_type'],
+            'chat_id': data['number'],
         }
 
     def decide_first_status(self):
@@ -1217,4 +1229,14 @@ class AcruxChatConversation(models.Model):
         Config = self.env['ir.config_parameter'].sudo()
         return {
             'chatroom_tab_orientation': Config.get_param('chatroom_tab_orientation')
+        }
+
+    def merge_chats_wizard(self):
+        return {
+            'name': _('Merge Chats'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'acrux.chat.merge.chat.wizard',
+            'target': 'new',
+            'context': dict(default_private_conversation=self.id)
         }
