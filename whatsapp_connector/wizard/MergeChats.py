@@ -52,3 +52,10 @@ class AcruxMergeChatsWizard(models.TransientModel):
             }
         self.private_conversation.unlink()
         return out
+
+    def _transient_clean_rows_older_than(self, seconds):
+        """Ensure the transient table exists before letting the base logic clean it."""
+        self.env.cr.execute('SELECT to_regclass(%s)', (self._table,))
+        if not self.env.cr.fetchone()[0]:
+            return
+        return super()._transient_clean_rows_older_than(seconds)

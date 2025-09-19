@@ -52,3 +52,10 @@ class AcruxMergeChatsWizard(models.TransientModel):
             }
         self.private_conversation.unlink()
         return out
+
+    def _transient_clean_rows_older_than(self, seconds):
+        """Prevent autovacuum errors if the transient table was never created."""
+        self.env.cr.execute('SELECT to_regclass(%s)', (self._table,))
+        if not self.env.cr.fetchone()[0]:
+            return
+        return super()._transient_clean_rows_older_than(seconds)
