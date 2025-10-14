@@ -1218,3 +1218,14 @@ class AcruxChatConversation(models.Model):
         return {
             'chatroom_tab_orientation': Config.get_param('chatroom_tab_orientation')
         }
+
+    def merge_chats_wizard(self):
+        self.ensure_one()
+        return {
+            'name': _('Merge Chats'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'acrux.chat.merge.chat.wizard',
+            'target': 'new',
+            'context': dict(default_private_conversation=self.id),
+        }
