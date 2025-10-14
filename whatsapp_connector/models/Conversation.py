@@ -35,6 +35,7 @@ class AcruxChatConversation(models.Model):
                                 store=True, readonly=True)
     conv_type = fields.Selection([('none', 'None'), ('normal', 'Normal'), ('private', 'Private')], readonly=False,
                                  string='Conversation Type', required=True, default='normal')
+    chat_id = fields.Char('Chat ID', index=True, help='Other id for chats')
     image_128 = fields.Image('Avatar', max_width=128, max_height=128)
     image_url = fields.Char('Avatar Url', compute='_image_update', store=True,
                             default=DEFAULT_IMAGE_URL, required=True)
