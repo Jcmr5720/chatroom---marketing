@@ -40,7 +40,12 @@ class Contact(models.Model):
         date_format = lang.date_format
         body = """"""
         for line in self._query_html_latest_sales():
-            uom_name = (line['uom_name'] or {}).get(lang_code, '')[:4]
+            uom_name_value = line['uom_name']
+            if isinstance(uom_name_value, dict):
+                uom_name = uom_name_value.get(lang_code, '')
+            else:
+                uom_name = uom_name_value or ''
+            uom_name = uom_name[:4]
             price_unit = lang.format(percent='%.{p}f'.format(p=precision_sale), value=line['price_unit'], grouping=True)
             qty = lang.format(percent='%.{p}f'.format(p=precision_uom), value=line['product_uom_qty'], grouping=True)
             date_order = line['date_order'].strftime(date_format).split(' ')[0]
