@@ -230,7 +230,9 @@ class ChatMessageWizard(models.TransientModel):
 
     def _parse_msg_data_tempalte(self, msg_datas):
         params = self.template_id.get_waba_param(self.res_id)
-        msg = self._decide_and_merge_message(msg_datas)
+        msg = msg_datas[0] if msg_datas else {}
+        if len(msg_datas) != 1:
+            msg_datas = [msg]
         msg['template_waba_id'] = self.template_id.waba_template_id.id
         msg['template_params'] = json.dumps({'params': params})
         ttype = self.template_id.waba_template_id.template_type.lower()
@@ -244,28 +246,6 @@ class ChatMessageWizard(models.TransientModel):
                 print(e)
         msg_datas = [msg]
         return msg_datas
-
-    def _decide_and_merge_message(self, msg_datas):
-        out = None
-        if len(msg_datas) == 1:
-            out = msg_datas[0]
-        elif len(msg_datas) == 2:
-            text_message = None
-            attach_message = None
-            if msg_datas[0]['ttype'] == 'text' and msg_datas[1]['ttype'] in ['file', 'image', 'video']:
-                text_message = msg_datas[0]
-                attach_message = msg_datas[1]
-            elif msg_datas[1]['ttype'] == 'text' and msg_datas[0]['ttype'] in ['file', 'image', 'video']:
-                text_message = msg_datas[1]
-                attach_message = msg_datas[0]
-            if text_message and attach_message:
-                attach_message['text'] = text_message['text']
-                out = attach_message
-            else:
-                raise ValidationError(_('Message types cannot be merged.'))
-        else:
-            raise ValidationError(_('Too many message to handle them.'))
-        return out
 
     def req_opt_in(self):
         self.ensure_one()
