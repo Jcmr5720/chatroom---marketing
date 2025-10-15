@@ -2699,12 +2699,6 @@ msgstr "Mensaje enviado"
 msgid "Message to send when drag & drop product"
 msgstr "Mensaje a enviar cuando arrastra y suelta producto"
 
-#. module: whatsapp_connector
-#. odoo-python
-#: code:addons/whatsapp_connector/wizard/MessageWizard.py:0
-#, python-format
-msgid "Message types cannot be merged."
-msgstr "Tipos de mensaje no pueden ser combinados."
 
 #. module: whatsapp_connector
 #. odoo-javascript
@@ -3995,12 +3989,6 @@ msgstr ""
 msgid "Too big, max. %s (%s)"
 msgstr "Demasiado grande, max. %s (%s)"
 
-#. module: whatsapp_connector
-#. odoo-python
-#: code:addons/whatsapp_connector/wizard/MessageWizard.py:0
-#, python-format
-msgid "Too many message to handle them."
-msgstr "Demasiados mensajes para manejarlos."
 
 #. module: whatsapp_connector
 #: model:ir.model.fields,field_description:whatsapp_connector.field_acrux_chat_ai_config__top_p
