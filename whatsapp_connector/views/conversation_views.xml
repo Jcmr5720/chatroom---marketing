@@ -122,6 +122,9 @@
                     <span class="o_stat_info">Send</span>
                 </button>
             </xpath>
+            <xpath expr="//button[@name='merge_chats_wizard']" position="replace">
+                <!-- Merge chats wizard button removed -->
+            </xpath>
             <xpath expr="//form/sheet/group" position="inside">
                 <field name="connector_id"/>
                 <field name="res_partner_id" context="{'set_default': True}" groups="base.group_partner_manager"/>
