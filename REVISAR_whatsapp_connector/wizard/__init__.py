@@ -6,4 +6,3 @@ from . import ScanQr
 from . import SimpleNewConversation
 from . import AiInterface
 from . import AiInterfaceTest
-from . import MergeChats

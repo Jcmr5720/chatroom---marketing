@@ -1009,11 +1009,6 @@ msgid "ChatRoom Live"
 msgstr "ChatRoom en Vivo"
 
 #. module: whatsapp_connector
-#: model:ir.model,name:whatsapp_connector.model_acrux_chat_merge_chat_wizard
-msgid "ChatRoom Merge Chats"
-msgstr "ChatRoom Unir Chats"
-
-#. module: whatsapp_connector
 #: model:ir.model,name:whatsapp_connector.model_acrux_chat_message_wizard
 msgid "ChatRoom Message"
 msgstr "Mensaje ChatRoom"
@@ -2673,19 +2668,6 @@ msgstr "Max Tokens debe ser mayor o igual que 0."
 #: model:ir.model.fields.selection,name:whatsapp_connector.selection__acrux_chat_conversation__priority__1
 msgid "Medium"
 msgstr "Medio"
-
-#. module: whatsapp_connector
-#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
-msgid "Merge"
-msgstr "Unir"
-
-#. module: whatsapp_connector
-#. odoo-python
-#: code:addons/whatsapp_connector/models/Conversation.py:0
-#: model_terms:ir.ui.view,arch_db:whatsapp_connector.acrux_chat_merge_chat_wizard_form
-#, python-format
-msgid "Merge Chats"
-msgstr "Unir Chats"
 
 #. module: whatsapp_connector
 #. odoo-python

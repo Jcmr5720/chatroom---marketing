@@ -121,14 +121,6 @@
                         context="{'default_conversation_id': id, 'full_name': True}">
                     <span class="o_stat_info">Send</span>
                 </button>
-                <button class="oe_stat_button"
-                    type="object"
-                    name="merge_chats_wizard"
-                    icon="fa-link"
-                    attrs="{'invisible':[('conv_type', '!=', 'private')]}"
-                    context="{'default_conversation_id': id}">
-                    <span class="o_stat_info">Merge</span>
-                </button>
             </xpath>
             <xpath expr="//form/sheet/group" position="inside">
                 <field name="connector_id"/>
@@ -271,14 +263,6 @@
                     attrs="{'invisible':[('connector_type', 'not in', ['apichat.io', 'chatapi'])]}">
                     <i class="fa fa-refresh" />
                     <span class="mx-2">Refresh API Data</span>
-                </button>
-                <button class="btn-primary"
-                    type="object"
-                    name="merge_chats_wizard"
-                    icon="fa-link"
-                    attrs="{'invisible':[('conv_type', '!=', 'private')]}"
-                    context="{'default_conversation_id': id}">
-                    <span class="o_stat_info">Merge</span>
                 </button>
             </xpath>
             <xpath expr="//form/sheet/header" position="attributes">
